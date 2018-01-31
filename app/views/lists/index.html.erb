@@ -1,0 +1,52 @@
+<h1><%= current_user.name%></h1>
+<ul>
+  <%= link_to "Sign Out", "/users/sign_out", method: :delete %>
+</ul>
+
+
+<h1>Your list:</h1>
+
+	<% @list.each do |list| %>
+		<h4><%=p list.name%></h4>
+		<%= link_to "Edit", "/lists/#{list.id}/edit" %>
+		&nbsp;&nbsp;&nbsp;<%= link_to "Delete", "/lists/#{list.id}", method: :delete %>
+	<% end %>
+
+<br><br><br>
+<a href="/lists/new">Add item</a>
+<br><br><br>
+
+<h1>Shopping For Me</h1>
+<% if @permissions.length > 0 %>
+	<%= form_tag "/lists/perm_del", method: :patch do %>
+		<% @permissions.each do |permissions| %>
+			<label>
+			<%= check_box_tag "permissions[]", permissions %>
+			<%= permissions %>
+			</label><br>
+		<% end %>
+		<%= submit_tag "Remove"%>
+	<% end %>
+<% else %>
+	<h5>You have not given your wishlist to anyone yet</h5>	
+<%end%>
+
+<br><br><br>
+
+<h1>My Wishlists</h1>
+<%if @mylists.length > 0 %>
+	<% @mylists.each do |list| %>
+		<h4><%= link_to list, "/lists/#{list}/show" %></h4>
+	<% end %>
+<% else %>
+	<h5>You have not been given anyone's wishlists yet</h5>
+<% end %>
+
+<br><br><br>
+
+<h4>Search People</h4>
+<%= form_tag "/lists/search", method: :get do %>
+  <%= label_tag :search,"Search" %>
+  <%= text_field_tag :search %>
+  <%= submit_tag "Search" %>
+<% end %>

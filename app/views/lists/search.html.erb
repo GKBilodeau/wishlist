@@ -1,0 +1,12 @@
+<h1>Search Results</h1>
+<%= form_tag "/lists/perm_mod", method: :patch do %>
+	<% @people.each do |person|%>
+		<label>
+		<%= check_box_tag "permissions[]", person.id %>
+		<%= person.name %><br>
+		</label>
+	<% end %>
+
+	<%= submit_tag "Submit"%>
+<% end %>
+<a href="/lists/index">Back to my list</a>

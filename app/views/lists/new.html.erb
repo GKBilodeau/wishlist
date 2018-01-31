@@ -1,0 +1,20 @@
+<h1>Add an item:</h1>
+<%= form_tag '/lists', method: :post do %>
+  <div class="form-group">
+    <%= label_tag :item_name %>
+    <%= text_field_tag :item_name, nil, class: "form-control", placeholder: "Enter item name", size: "50" %>
+  </div>
+  <div class="form-group">
+    <%= label_tag :item_description, "Item description", :style => "vertical-align: top;" %>
+   <%= text_field_tag :item_description, nil, class: "form-control", placeholder: "Description (color, size, any notes)", size: "50" %>
+  </div>
+  <div class="form-group">
+    <%= label_tag :where_to_find %>
+    <%= text_field_tag :where_to_find, nil, class: "form-control", size: "50" %>
+  </div>
+  <div>
+    <%= button_tag 'Add', class: "btn btn-default" %>
+  </div>
+<% end %>
+
+<a href="/lists/index">Back to my list</a>

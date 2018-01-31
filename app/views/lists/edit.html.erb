@@ -1,0 +1,20 @@
+<h1>Edit item:</h1>
+<%= form_tag "/lists/#{@list.id}", method: :patch do %>
+  <div class="form-group">
+    <%= label_tag :item_name %>
+    <%= text_field_tag :item_name, @list.name, class: "form-control", placeholder: "Enter item name", size: "50" %>
+  </div>
+  <div class="form-group">
+    <%= label_tag :item_description%>
+    <%= text_field_tag :item_description, @list.description, class: "form-control", placeholder: "Description (color, size, any notes)", size: "50" %>
+  </div>
+  <div class="form-group">
+    <%= label_tag :where_to_find %>
+    <%= text_field_tag :where_to_find, @list.stores, class: "form-control", size: "50" %>
+  </div>
+  <div>
+    <%= button_tag 'Update', class: "btn btn-default" %>
+  </div>
+<% end %>
+
+<a href="/lists/index">Back to my list</a>
