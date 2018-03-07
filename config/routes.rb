@@ -15,3 +15,4 @@ Rails.application.routes.draw do
   get '/lists/search' => 'lists#search'
   get '/lists/:id/show' => 'lists#show'
 end
+
