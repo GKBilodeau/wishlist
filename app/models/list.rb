@@ -1,8 +1,17 @@
 class List < ApplicationRecord
 	belongs_to :user, required: false
+	belongs_to :listname, required: false
 
-	def self.getlist(id)
-		where(userid: id)
+	def self.currentlist(id)
+		where(listnameid: id).order("id")		
+	end
+
+	def self.getlist(items)
+		list = []
+		items.each do |item|
+			list << List.find_by(id: item)
+		end
+		list
 	end
 
 	def self.buy(itemname,userid)

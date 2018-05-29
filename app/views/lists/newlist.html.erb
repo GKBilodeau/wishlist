@@ -1,0 +1,8 @@
+<h1>CREATE NEW LIST</h1>
+<%= form_tag '/lists/name', method: :post do %>
+  <div class="form-group">
+    <%= text_field_tag :list_name, nil, class: "form-control", placeholder: "List Name"%>
+  </div>
+    <%= submit_tag "Create List" %>
+  </div>
+<% end %>

@@ -6,22 +6,39 @@ class ListsController < ApplicationController
 	end
 
 	def index
-		@list = List.where(userid: current_user.id)
+		@listnames = Listname.where(userid: current_user.id)
 		@permissions = User.fill(current_user.permissions)
 		@mylists =  User.wishlists(current_user.mylists)
+		@listname = Listname.where(userid: current_user.id)
 	end
 
-	def new
+	def newitem
+		
+	end
+
+	def newlist
 		
 	end
 
 	def create
-		List.create(
-        name: params[:item_name],
-        description: params[:item_description],
-        stores: params[:where_to_find],
-        userid: current_user.id
-        )
+		if params[:item_name]
+			newitem = List.create(
+		    name: params[:item_name],
+		    description: params[:item_description],
+		    stores: params[:where_to_find],
+		    userid: current_user.id,
+		    listnameid: Listname.getnameid(params[:listname])
+		    )
+		    Listname.additem(newitem.id,params[:listname])
+		        if params[:multiple_purchases] == "1"
+		        	newitem.update_attributes(:multiplepurchases => true)
+		        end
+		elsif params[:list_name]
+	        Listname.create(
+	        name: params[:list_name],
+	        userid: current_user.id
+	        )
+        end	
         redirect_to "/lists/index"
 	end
 
@@ -45,24 +62,40 @@ class ListsController < ApplicationController
 		redirect_to "/lists/index"
 	end
 
+	def destroy_list
+		list = Listname.find_by(id: params[:id])
+		Listname.deleteitems(list.listitems)
+		list.destroy
+		redirect_to "/lists/index"
+	end
+
 	def search
 		@people = User.search(params[:search],current_user.id,current_user.permissions)
 	end
 
 	def perm_mod
-		User.perm_mod(params[:permissions],current_user.id)
-		User.mylists_mod(params[:permissions],current_user.id)
+		if params[:permissions]
+			User.perm_mod(params[:permissions],current_user.id)
+			User.mylists_mod(params[:permissions],params[:name])
+		end
 		redirect_to "/lists/index"
 	end
 
 	def show
-		@list = User.find_by(name: params[:id])
-		@list = List.getlist(@list.id)
+		@list = Listname.find_by(name: params[:id])
+		@list = List.getlist(@list.listitems)
+	end
+
+	def listshow
+		@listname = Listname.find_by(name: params[:id])
+		@list = List.currentlist(@listname.id)
 	end
 
 	def perm_del
-		User.perm_del(params[:permissions],current_user.id)
-		User.mylist_del(params[:permissions],current_user.id)
+		if params[:permissions]
+			User.perm_del(params[:permissions],current_user.id)
+			User.mylist_del(params[:permissions],current_user.id)
+		end
 		redirect_to "/lists/index"
 	end
 

@@ -1,0 +1,26 @@
+<h1><%= @listname.name %></h1>
+<% @list.each do |list| %>
+		<h4><%=p list.name%></h4>
+		<%= link_to "Edit", "/lists/#{list.id}/edit" %>
+		&nbsp;&nbsp;&nbsp;<%= link_to "Delete", "/lists/#{list.id}", method: :delete %>
+	<% end %>
+
+<br><br>
+<%= form_tag "/lists/newitem", method: :get do %>
+  <%= hidden_field_tag "name", params[:id] %>
+  <%= submit_tag "Add New Item" %>
+<% end %>
+<%= link_to "Delete This List", "/lists/destroy_list/#{@listname.id}", method: :delete %>
+<br><br>
+
+<h4>Send This List To People</h4>
+<%= form_tag "/lists/search", method: :get do %>
+  <%= label_tag :search,"Search" %>
+  <%= text_field_tag :search %>
+  <%= hidden_field_tag "name", params[:id] %>
+  <%= submit_tag "Search" %>
+<% end %>
+
+<br><br><
+
+<a href="/lists/index">Back to my dashboard</a>

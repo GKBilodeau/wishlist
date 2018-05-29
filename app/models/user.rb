@@ -4,6 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
          has_many :lists
+         has_many :listnames
 
         def self.search(search, userid, userperms)
         	where("id != #{userid} AND name ILIKE ?","%#{search}%")
@@ -23,13 +24,14 @@ class User < ApplicationRecord
            	)
         end
 
-        def self.mylists_mod(perms, userid)
+        def self.mylists_mod(perms, listname)
+            list = Listname.find_by(name: listname).id
         	perms = perms.map(&:to_i)
         	perms.each do |perm|
         		givento = User.find_by(id: perm)
         		temparr = givento.mylists.dup
-        		unless temparr.include? userid
-        			temparr << userid
+        		unless temparr.include? list
+        			temparr << list
         		end
         		givento.update(
         			mylists: temparr
@@ -49,8 +51,9 @@ class User < ApplicationRecord
         def self.wishlists(mylists)
         	names = []
         	mylists.each do |list|
-        		wishlist = User.find_by(id: list)
-        		names << wishlist.name
+        		wishlist = Listname.find_by(id: list)
+        		person = User.find_by(id: wishlist.userid)
+                names << [person.name,wishlist.name]
         	end
         	names
         end

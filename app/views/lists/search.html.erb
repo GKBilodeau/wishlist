@@ -1,3 +1,10 @@
+<h4>Search People</h4>
+<%= form_tag "/lists/search", method: :get do %>
+  <%= label_tag :search,"Search" %>
+  <%= text_field_tag :search %>
+  <%= submit_tag "Search" %>
+<% end %>
+
 <h1>Search Results</h1>
 <%= form_tag "/lists/perm_mod", method: :patch do %>
 	<% @people.each do |person|%>
@@ -5,8 +12,9 @@
 		<%= check_box_tag "permissions[]", person.id %>
 		<%= person.name %><br>
 		</label>
+		<br>
 	<% end %>
-
+  <%= hidden_field_tag "name", params[:name] %>
 	<%= submit_tag "Submit"%>
 <% end %>
-<a href="/lists/index">Back to my list</a>
+<a href="/lists/index">Back to my dashboard</a>

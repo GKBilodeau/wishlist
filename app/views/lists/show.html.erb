@@ -1,23 +1,8 @@
-<h1><%=params[:id]%>'s Wishlist</h1>
+<h1><%=params[:id]%> Wishlist</h1>
 <%= form_tag "/lists/buy", method: :patch do %>
 	<% @list.each do |item| %>
-	<br><br><br>
-		<% if item.purchased == true && item.purchasedby == current_user.id %>
-			<strike> <%= item.name%> </strike>
-			<%= link_to "Don't Buy", "/lists/buy?param1=#{item.id}&param2=#{params[:id]}", method: :patch%>
-		<% elsif item.purchased == true && item.purchasedby != current_user.id %>
-			<strike> <%= item.name%> </strike>
-			<h6>Purshsed By: <%= User.find_by(id: item.purchasedby).name %></h6>
-		<% else %>
-			<label>
-			<%= check_box_tag "items[]", item.name%>
-			<%= item.name%>
-			</label><br>
-		<% end %>
-		<h5>Description:  <%= item.description%></h5>
-		<h5>Where to find:  <%= item.stores%></h5>
-	<% end %>
-	<%= hidden_field_tag 'list', params[:id]%>
-	<%= submit_tag "Buy"%>
+			<h4><%= item.name %></h4>
+	<% end %>		
 <% end %>
-<a href="/lists/index">Back to my list</a>
+
+<a href="/lists/index">Back to my dashboard</a>

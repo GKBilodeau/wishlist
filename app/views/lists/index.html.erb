@@ -45,17 +45,11 @@
 </ul>
 
 
-<h1>Your list:</h1>
-
-	<% @list.each do |list| %>
-		<h4><%=p list.name%></h4>
-		<%= link_to "Edit", "/lists/#{list.id}/edit" %>
-		&nbsp;&nbsp;&nbsp;<%= link_to "Delete", "/lists/#{list.id}", method: :delete %>
-	<% end %>
-
-<br><br><br>
-<a href="/lists/new">Add item</a>
-<br><br><br>
+<h1>My Lists:</h1>
+<% @listname.each do |listname| %>
+	<p><%= link_to listname.name,"/lists/listshow/#{listname.name}/" %></p>
+<% end %>
+<a href="/lists/newlist">Create New List</a>
 
 <h1>Shopping For Me</h1>
 <% if @permissions.length > 0 %>
@@ -74,21 +68,14 @@
 
 <br><br><br>
 
-<h1>My Wishlists</h1>
+<h1>People To Shop For</h1>
 <%if @mylists.length > 0 %>
 	<% @mylists.each do |list| %>
-		<h4><%= link_to list, "/lists/#{list}/show" %></h4>
+		<h4><%= link_to list[0], "/lists/show/#{list[1]}" %></h4>
 	<% end %>
 <% else %>
 	<h5>You have not been given anyone's wishlists yet</h5>
 <% end %>
 
-<br><br><br>
 
-<h4>Search People</h4>
-<%= form_tag "/lists/search", method: :get do %>
-  <%= label_tag :search,"Search" %>
-  <%= text_field_tag :search %>
-  <%= submit_tag "Search" %>
-<% end %>
 
